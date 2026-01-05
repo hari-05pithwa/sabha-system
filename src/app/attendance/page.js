@@ -41,8 +41,6 @@
 
 // import Link from 'next/link';
 
-
-
 // export default function AttendanceUnifiedPage() {
 
 //   const { data: session } = useSession();
@@ -63,13 +61,9 @@
 
 //   const [currentActiveMonth, setCurrentActiveMonth] = useState(new Date());
 
-
-
 //   const currentMonthSundays = getSundaysInMonth(format(currentActiveMonth, 'yyyy-MM'));
 
 //   const formatName = (str) => str?.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
-
-
 
 //   useEffect(() => {
 
@@ -78,8 +72,6 @@
 //       // 1. Critical Guard: Wait for the session and area to load
 
 //       if (!session?.user?.area) return;
-
-     
 
 //       setLoading(true);
 
@@ -95,8 +87,6 @@
 
 //           const validData = Array.isArray(data) ? data : [];
 
-         
-
 //           const monthKey = format(currentActiveMonth, 'yyyy-MM');
 
 //           // Double-check filtering in frontend as a safety layer
@@ -107,15 +97,11 @@
 
 //           );
 
-         
-
 //           setHistory(filteredHistory);
 
 //           setSavedDates(filteredHistory.map(s => s.date));
 
 //         }
-
-       
 
 //         // 3. Fetch Balaks filtered by area
 
@@ -145,8 +131,6 @@
 
 //     };
 
-
-
 //     fetchData();
 
 //   }, [view, session, currentActiveMonth]);
@@ -159,8 +143,6 @@
 
 //   };
 
-
-
 //   const submitAttendance = async () => {
 
 //     if (!selectedDate) return toast.error("Select a Sunday first!");
@@ -168,8 +150,6 @@
 //     const unmarkedKids = balaks.filter(b => !attendanceState[b._id]);
 
 //     if (unmarkedKids.length > 0) return toast.error(`Please mark all kids!`);
-
-   
 
 //     setLoading(true);
 
@@ -201,8 +181,6 @@
 
 //       });
 
-
-
 //       if (res.ok) {
 
 //         toast.success("Sabha Locked Successfully!");
@@ -227,11 +205,7 @@
 
 //   };
 
-
-
 //   const isDateLocked = savedDates.includes(selectedDate);
-
-
 
 //   const MonthPicker = () => (
 
@@ -259,8 +233,6 @@
 
 //   );
 
-
-
 //   // --- 1. HUB VIEW ---
 
 //   if (view === 'hub') return (
@@ -273,8 +245,6 @@
 
 //       </Link>
 
-     
-
 //       <header className="mb-12">
 
 //         <h1 className="text-4xl font-black text-slate-950 tracking-tighter leading-none uppercase">Attendance</h1>
@@ -282,8 +252,6 @@
 //         <p className="text-slate-500 font-bold text-[10px] uppercase tracking-widest mt-4">{session?.user?.area}</p>
 
 //       </header>
-
-
 
 //       <div className="grid gap-4">
 
@@ -294,8 +262,6 @@
 //           <div className="text-left"><h2 className="text-xl font-black uppercase">Take</h2><p className="text-slate-400 text-[10px] font-bold tracking-widest mt-1">Mark New Sabha</p></div>
 
 //         </button>
-
-
 
 //         <button onClick={() => setView('view')} className="bg-white p-8 rounded-[2.5rem] flex items-center gap-6 text-slate-900 border border-slate-200">
 
@@ -311,8 +277,6 @@
 
 //   );
 
-
-
 //   // --- 2. TAKE VIEW ---
 
 //   if (view === 'take') return (
@@ -325,11 +289,7 @@
 
 //       </motion.button>
 
-     
-
 //       <MonthPicker />
-
-
 
 //       <div className="mb-10 space-y-3">
 
@@ -366,8 +326,6 @@
 //         )}
 
 //       </div>
-
-
 
 //       <div className={`space-y-4 ${isDateLocked ? 'opacity-30 pointer-events-none' : ''}`}>
 
@@ -407,8 +365,6 @@
 
 //       </div>
 
-
-
 //       {!isDateLocked && (
 
 //         <div className="fixed bottom-10 left-6 right-6 z-50">
@@ -427,8 +383,6 @@
 
 //   );
 
-
-
 //   // --- 3. VIEW HISTORY VIEW ---
 
 //   if (view === 'view') return (
@@ -441,15 +395,9 @@
 
 //       </motion.button>
 
-     
-
 //       <MonthPicker />
 
-
-
 //       <h1 className="text-3xl font-black text-slate-950 tracking-tighter uppercase mb-8">Sabha Logs</h1>
-
-     
 
 //       <div className="space-y-6">
 
@@ -505,8 +453,6 @@
 
 //               </div>
 
-
-
 //               <div className="grid gap-2">
 
 //                 {session.attendanceList?.map((log, idx) => (
@@ -535,48 +481,47 @@
 
 //   );
 
-
-
 //   return <div />;
 
 // }
 
-
-
-
-
-
-
-
-
-
 "use client";
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { toast } from 'sonner';
-import { 
-  format, 
-  addMonths, 
-  subMonths, 
-  startOfMonth, 
-  endOfMonth, 
-  startOfWeek, 
-  endOfWeek, 
-  isSameMonth, 
-  addDays, 
-  isToday 
-} from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowLeft, CheckCircle2, Loader2, 
-  Sparkles, ClipboardCheck, 
-  LayoutList, ChevronLeft, ChevronRight, Lock, History, Activity, Home, ArrowUpLeft
-} from 'lucide-react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  isSameMonth,
+  addDays,
+  isToday,
+} from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Loader2,
+  Sparkles,
+  ClipboardCheck,
+  LayoutList,
+  ChevronLeft,
+  ChevronRight,
+  Lock,
+  History,
+  Activity,
+  Home,
+  ArrowUpLeft,
+} from "lucide-react";
+import Link from "next/link";
 
 export default function AttendanceUnifiedPage() {
   const { data: session } = useSession();
-  const [view, setView] = useState('hub');
+  const [view, setView] = useState("hub");
   const [balaks, setBalaks] = useState([]);
   const [history, setHistory] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
@@ -585,24 +530,33 @@ export default function AttendanceUnifiedPage() {
   const [savedDates, setSavedDates] = useState([]);
   const [currentActiveMonth, setCurrentActiveMonth] = useState(new Date());
 
-  const formatName = (str) => str?.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  const formatName = (str) =>
+    str?.toLowerCase().replace(/\b\w/g, (s) => s.toUpperCase());
 
   useEffect(() => {
     const fetchData = async () => {
       if (!session?.user?.area) return;
       setLoading(true);
       try {
-        if (view === 'take' || view === 'view') {
+        if (view === "take" || view === "view") {
           const res = await fetch(`/api/attendance?t=${Date.now()}`);
           const data = await res.json();
           const validData = Array.isArray(data) ? data : [];
-          setHistory(validData.filter(s => s.area === session.user.area));
-          setSavedDates(validData.filter(s => s.area === session.user.area).map(s => s.date));
+          setHistory(validData.filter((s) => s.area === session.user.area));
+          setSavedDates(
+            validData
+              .filter((s) => s.area === session.user.area)
+              .map((s) => s.date)
+          );
         }
-        if (view === 'take') {
+        if (view === "take") {
           const res = await fetch(`/api/balaks?t=${Date.now()}`);
           const data = await res.json();
-          setBalaks(Array.isArray(data) ? data.filter(b => b.area === session.user.area) : []);
+          setBalaks(
+            Array.isArray(data)
+              ? data.filter((b) => b.area === session.user.area)
+              : []
+          );
         }
       } catch (err) {
         console.error("Attendance Load Error:", err);
@@ -615,32 +569,33 @@ export default function AttendanceUnifiedPage() {
   }, [view, session]);
 
   const handleStatusChange = (id, status) => {
-    if (!selectedDate) return toast.error("Select a date from the calendar first!");
-    setAttendanceState(prev => ({ ...prev, [id]: status }));
+    if (!selectedDate)
+      return toast.error("Select a date from the calendar first!");
+    setAttendanceState((prev) => ({ ...prev, [id]: status }));
   };
 
   const submitAttendance = async () => {
-    const unmarkedKids = balaks.filter(b => !attendanceState[b._id]);
+    const unmarkedKids = balaks.filter((b) => !attendanceState[b._id]);
     if (unmarkedKids.length > 0) return toast.error(`Please mark all kids!`);
-    
+
     setLoading(true);
     try {
-      const res = await fetch('/api/attendance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          attendanceList: balaks.map(b => ({
+          attendanceList: balaks.map((b) => ({
             balakId: b._id,
             fullName: `${b.firstName} ${b.lastName}`,
-            status: attendanceState[b._id]
+            status: attendanceState[b._id],
           })),
           date: selectedDate,
-          area: session.user.area
-        })
+          area: session.user.area,
+        }),
       });
       if (res.ok) {
         toast.success("Attendance Saved!");
-        setView('hub');
+        setView("hub");
       }
     } catch (err) {
       toast.error("Network error.");
@@ -653,19 +608,21 @@ export default function AttendanceUnifiedPage() {
 
   const MonthPicker = () => (
     <div className="flex items-center justify-between bg-white/60 backdrop-blur-xl p-2 rounded-3xl border border-white shadow-xl shadow-slate-200/50 mb-8">
-      <motion.button 
-        whileTap={{ scale: 0.9 }} 
-        onClick={() => setCurrentActiveMonth(prev => subMonths(prev, 1))} 
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setCurrentActiveMonth((prev) => subMonths(prev, 1))}
         className="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-slate-100 text-slate-600"
       >
         <ChevronLeft size={20} />
       </motion.button>
       <div className="text-center px-4">
-        <h2 className="text-sm font-black text-slate-900 tracking-tight uppercase">{format(currentActiveMonth, 'MMMM yyyy')}</h2>
+        <h2 className="text-sm font-black text-slate-900 tracking-tight uppercase">
+          {format(currentActiveMonth, "MMMM yyyy")}
+        </h2>
       </div>
-      <motion.button 
-        whileTap={{ scale: 0.9 }} 
-        onClick={() => setCurrentActiveMonth(prev => addMonths(prev, 1))} 
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setCurrentActiveMonth((prev) => addMonths(prev, 1))}
         className="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-slate-100 text-slate-600"
       >
         <ChevronRight size={20} />
@@ -701,7 +658,11 @@ export default function AttendanceUnifiedPage() {
             }}
             className={`relative h-12 flex flex-col items-center justify-center cursor-pointer rounded-xl transition-all duration-300
               ${!isCurrentMonth ? "opacity-10" : "hover:bg-indigo-50"}
-              ${isSelected ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200 scale-105 z-10" : "text-slate-700"}
+              ${
+                isSelected
+                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200 scale-105 z-10"
+                  : "text-slate-700"
+              }
             `}
           >
             <span className="text-sm font-bold">{format(day, "d")}</span>
@@ -715,22 +676,47 @@ export default function AttendanceUnifiedPage() {
         );
         day = addDays(day, 1);
       }
-      rows.push(<div key={day.toString()} className="grid grid-cols-7 gap-1">{days}</div>);
+      rows.push(
+        <div key={day.toString()} className="grid grid-cols-7 gap-1">
+          {days}
+        </div>
+      );
       days = [];
     }
 
     return (
       <div className="bg-white rounded-[2.5rem] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 mb-8">
         <div className="flex items-center justify-between mb-6 px-2">
-          <h2 className="text-xl font-black text-slate-900 tracking-tight">{format(currentActiveMonth, "MMMM yyyy")}</h2>
+          <h2 className="text-xl font-black text-slate-900 tracking-tight">
+            {format(currentActiveMonth, "MMMM yyyy")}
+          </h2>
           <div className="flex gap-2">
-            <button onClick={() => setCurrentActiveMonth(subMonths(currentActiveMonth, 1))} className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"><ChevronLeft size={20} /></button>
-            <button onClick={() => setCurrentActiveMonth(addMonths(currentActiveMonth, 1))} className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"><ChevronRight size={20} /></button>
+            <button
+              onClick={() =>
+                setCurrentActiveMonth(subMonths(currentActiveMonth, 1))
+              }
+              className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() =>
+                setCurrentActiveMonth(addMonths(currentActiveMonth, 1))
+              }
+              className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
         <div className="grid grid-cols-7 gap-1 mb-2">
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => (
-            <div key={d} className="text-center text-[10px] font-black uppercase tracking-widest text-slate-300 py-2">{d}</div>
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+            <div
+              key={d}
+              className="text-center text-[10px] font-black uppercase tracking-widest text-slate-300 py-2"
+            >
+              {d}
+            </div>
           ))}
         </div>
         {rows}
@@ -739,133 +725,284 @@ export default function AttendanceUnifiedPage() {
   };
 
   // --- 1. HUB VIEW ---
-  if (view === 'hub') return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-[#FDFDFD] px-6 pt-20 pb-12 font-sans relative overflow-hidden">
-      <div className="absolute top-[-5%] right-[-5%] w-64 h-64 bg-indigo-50 blur-[100px] rounded-full -z-10" />
-      <header className="mb-14 px-2">
-        <div className="flex items-center gap-2 mb-3">
+  if (view === "hub")
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="min-h-screen bg-[#FDFDFD] px-6 pt-20 pb-12 font-sans relative overflow-hidden"
+      >
+        <div className="absolute top-[-5%] right-[-5%] w-64 h-64 bg-indigo-50 blur-[100px] rounded-full -z-10" />
+        <header className="mb-14 px-2">
+          <div className="flex items-center gap-2 mb-3">
             <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-            <p className="text-indigo-600 font-bold text-[10px] uppercase tracking-widest leading-none">{session?.user?.area}</p>
+            <p className="text-indigo-600 font-bold text-[10px] uppercase tracking-widest leading-none">
+              {session?.user?.area}
+            </p>
+          </div>
+          <h1 className="text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">
+            Attendance Portal
+          </h1>
+        </header>
+        <div className="grid gap-5">
+          <motion.button
+            whileHover={{ y: -5 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView("take")}
+            className="bg-slate-900 p-8 rounded-[3rem] flex items-center gap-6 text-white shadow-2xl relative overflow-hidden group"
+          >
+            <div className="w-16 h-16 bg-indigo-500 rounded-3xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <ClipboardCheck size={32} />
+            </div>
+            <div className="text-left z-10">
+              <h2 className="text-2xl font-black tracking-tight uppercase">
+                Take
+              </h2>
+              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+                Mark New Sabha
+              </p>
+            </div>
+          </motion.button>
+          <motion.button
+            whileHover={{ y: -5 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setView("view")}
+            className="bg-white p-8 rounded-[3rem] flex items-center gap-6 text-slate-900 border border-slate-100 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.05)] group relative overflow-hidden"
+          >
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center">
+              <LayoutList size={32} />
+            </div>
+            <div className="text-left z-10">
+              <h2 className="text-2xl font-black tracking-tight uppercase">
+                View
+              </h2>
+              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+                Logs & Reports
+              </p>
+            </div>
+          </motion.button>
+          <Link
+            href="/"
+            className="mt-4 flex items-center justify-center gap-2 bg-slate-50 py-5 rounded-[2rem] text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] border border-slate-100 hover:bg-white transition-all"
+          >
+            <Home size={14} /> Back to Dashboard
+          </Link>
         </div>
-        <h1 className="text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">Attendance Portal</h1>
-      </header>
-      <div className="grid gap-5">
-        <motion.button whileHover={{ y: -5 }} whileTap={{ scale: 0.98 }} onClick={() => setView('take')} className="bg-slate-900 p-8 rounded-[3rem] flex items-center gap-6 text-white shadow-2xl relative overflow-hidden group">
-          <div className="w-16 h-16 bg-indigo-500 rounded-3xl flex items-center justify-center shadow-lg shadow-indigo-500/20"><ClipboardCheck size={32} /></div>
-          <div className="text-left z-10"><h2 className="text-2xl font-black tracking-tight uppercase">Take</h2><p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Mark New Sabha</p></div>
-        </motion.button>
-        <motion.button whileHover={{ y: -5 }} whileTap={{ scale: 0.98 }} onClick={() => setView('view')} className="bg-white p-8 rounded-[3rem] flex items-center gap-6 text-slate-900 border border-slate-100 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.05)] group relative overflow-hidden">
-          <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center"><LayoutList size={32} /></div>
-          <div className="text-left z-10"><h2 className="text-2xl font-black tracking-tight uppercase">View</h2><p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Logs & Reports</p></div>
-        </motion.button>
-        <Link href="/" className="mt-4 flex items-center justify-center gap-2 bg-slate-50 py-5 rounded-[2rem] text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] border border-slate-100 hover:bg-white transition-all">
-          <Home size={14} /> Back to Dashboard
-        </Link>
-      </div>
-    </motion.div>
-  );
+      </motion.div>
+    );
 
   // --- 2. TAKE VIEW ---
-  if (view === 'take') return (
-    <div className="min-h-screen bg-[#FDFDFD] px-6 pt-14 pb-44">
-      <header className="flex items-center justify-between mb-8">
-        <Link href="/" className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-400">
-           <Home size={20} />
-        </Link>
-        <h1 className="text-lg font-black text-slate-900 tracking-tight uppercase text-center">Take Attendance</h1>
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => {setView('hub'); setSelectedDate("")}} className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-indigo-600">
-          <ArrowUpLeft size={20} />
-        </motion.button>
-      </header>
-      
-      <ModernCalendar />
+  if (view === "take")
+    return (
+      <div className="min-h-screen bg-[#FDFDFD] px-6 pt-14 pb-44">
+        <header className="flex items-center justify-between mb-8">
+          <Link
+            href="/"
+            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-400"
+          >
+            <Home size={20} />
+          </Link>
+          <h1 className="text-lg font-black text-slate-900 tracking-tight uppercase text-center">
+            Take Attendance
+          </h1>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => {
+              setView("hub");
+              setSelectedDate("");
+            }}
+            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-indigo-600"
+          >
+            <ArrowUpLeft size={20} />
+          </motion.button>
+        </header>
 
-      {selectedDate && (
-        <AnimatePresence mode="wait">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <div className="flex items-center justify-between px-2">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Date: {format(new Date(selectedDate), "do MMMM")}</span>
-                {isDateLocked && <span className="bg-red-50 text-red-500 text-[9px] font-black px-3 py-1 rounded-full border border-red-100 uppercase tracking-widest flex items-center gap-1"><Lock size={10}/> Locked</span>}
-            </div>
+        <ModernCalendar />
 
-            <div className={`space-y-4 ${isDateLocked ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
+        {selectedDate && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between px-2">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Date: {format(new Date(selectedDate), "do MMMM")}
+                </span>
+                {isDateLocked && (
+                  <span className="bg-red-50 text-red-500 text-[9px] font-black px-3 py-1 rounded-full border border-red-100 uppercase tracking-widest flex items-center gap-1">
+                    <Lock size={10} /> Locked
+                  </span>
+                )}
+              </div>
+
+              <div
+                className={`space-y-4 ${
+                  isDateLocked ? "opacity-40 grayscale pointer-events-none" : ""
+                }`}
+              >
                 {balaks.map((balak) => (
-                <div key={balak._id} className="bg-white p-5 rounded-[2.5rem] border border-slate-50 shadow-sm">
+                  <div
+                    key={balak._id}
+                    className="bg-white p-5 rounded-[2.5rem] border border-slate-50 shadow-sm"
+                  >
                     <div className="flex items-center gap-4 mb-5">
-                        <img src={balak.photoUrl} className="w-16 h-16 rounded-2xl object-cover ring-4 ring-slate-50" />
-                        <h3 className="font-black text-slate-900 text-lg flex-1 leading-tight">{formatName(balak.firstName)} {formatName(balak.lastName)}</h3>
+                      <img
+                        src={balak.photoUrl}
+                        className="w-16 h-16 rounded-2xl object-cover ring-4 ring-slate-50"
+                      />
+                      <h3 className="font-black text-slate-900 text-lg flex-1 leading-tight">
+                        {formatName(balak.firstName)}{" "}
+                        {formatName(balak.lastName)}
+                      </h3>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <button onClick={() => handleStatusChange(balak._id, "Present")} className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${attendanceState[balak._id] === "Present" ? 'bg-emerald-500 text-white' : 'bg-slate-50 text-slate-400'}`}>Present</button>
-                        <button onClick={() => handleStatusChange(balak._id, "Absent")} className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${attendanceState[balak._id] === "Absent" ? 'bg-red-500 text-white' : 'bg-red-50 text-red-400'}`}>Absent</button>
+                      <button
+                        onClick={() => handleStatusChange(balak._id, "Present")}
+                        className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
+                          attendanceState[balak._id] === "Present"
+                            ? "bg-emerald-500 text-white"
+                            : "bg-slate-50 text-slate-400"
+                        }`}
+                      >
+                        Present
+                      </button>
+                      <button
+                        onClick={() => handleStatusChange(balak._id, "Absent")}
+                        className={`h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
+                          attendanceState[balak._id] === "Absent"
+                            ? "bg-red-500 text-white"
+                            : "bg-red-50 text-red-400"
+                        }`}
+                      >
+                        Absent
+                      </button>
                     </div>
-                </div>
-                ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {selectedDate && !isDateLocked && balaks.length > 0 && (
-        <div className="fixed bottom-10 left-6 right-6 z-50">
-          <motion.button whileHover={{ y: -5 }} whileTap={{ scale: 0.95 }} onClick={submitAttendance} className="w-full h-16 bg-slate-900 text-white rounded-[2rem] font-black uppercase text-sm tracking-[0.2em] shadow-2xl">
-            {loading ? <Loader2 className="animate-spin mx-auto" /> : "Save attendance"}
-          </motion.button>
-        </div>
-      )}
-    </div>
-  );
-
-  // --- 3. VIEW HISTORY VIEW ---
-  if (view === 'view') return (
-    <div className="min-h-screen bg-[#FDFDFD] px-6 pt-14 pb-24">
-      <header className="flex items-center justify-between mb-8 px-2">
-        <Link href="/" className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-400">
-           <Home size={20} />
-        </Link>
-        <div className="text-center">
-            <h1 className="text-lg font-black text-slate-900 tracking-tight uppercase leading-none">History</h1>
-            <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">Sabha Logs</p>
-        </div>
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => setView('hub')} className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-indigo-600">
-           <ArrowUpLeft size={20} />
-        </motion.button>
-      </header>
-
-      <MonthPicker />
-
-      <div className="space-y-6">
-        {history.filter(s => s.date.startsWith(format(currentActiveMonth, 'yyyy-MM'))).length === 0 ? (
-          <div className="text-center py-20 flex flex-col items-center gap-4">
-              <History size={48} className="text-slate-200" />
-              <p className="opacity-30 font-black uppercase text-[10px] tracking-widest">No Logs for this month</p>
-          </div>
-        ) : (
-          history.filter(s => s.date.startsWith(format(currentActiveMonth, 'yyyy-MM'))).map((session, i) => (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} key={session._id || i} className="bg-white rounded-[2.5rem] p-6 border border-slate-50 shadow-sm mb-4">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                    <h3 className="font-black text-slate-900 text-xl tracking-tighter uppercase leading-none">{format(new Date(session.date), 'do MMMM')}</h3>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">Attendance Summary</p>
-                </div>
-                <div className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-black shadow-lg shadow-slate-200">
-                    {session.attendanceList?.filter(it => it.status === "Present").length}/{session.attendanceList?.length}
-                </div>
-              </div>
-              <div className="grid gap-2">
-                {session.attendanceList?.map((log, idx) => (
-                  <div key={idx} className="flex justify-between items-center bg-slate-50/50 px-5 py-4 rounded-2xl border border-slate-100/30">
-                    <span className="font-bold text-slate-700 text-sm">{formatName(log.fullName)}</span>
-                    <span className={`text-[8px] font-black uppercase px-2 py-1 rounded-lg ${log.status === "Present" ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>{log.status}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
-          ))
+          </AnimatePresence>
+        )}
+
+        {selectedDate && !isDateLocked && balaks.length > 0 && (
+          <div className="fixed bottom-10 left-6 right-6 z-50">
+            <motion.button
+              whileHover={{ y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={submitAttendance}
+              className="w-full h-16 bg-slate-900 text-white rounded-[2rem] font-black uppercase text-sm tracking-[0.2em] shadow-2xl"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin mx-auto" />
+              ) : (
+                "Save attendance"
+              )}
+            </motion.button>
+          </div>
         )}
       </div>
-    </div>
-  );
+    );
+
+  // --- 3. VIEW HISTORY VIEW ---
+  if (view === "view")
+    return (
+      <div className="min-h-screen bg-[#FDFDFD] px-6 pt-14 pb-24">
+        <header className="flex items-center justify-between mb-8 px-2">
+          <Link
+            href="/"
+            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-400"
+          >
+            <Home size={20} />
+          </Link>
+          <div className="text-center">
+            <h1 className="text-lg font-black text-slate-900 tracking-tight uppercase leading-none">
+              History
+            </h1>
+            <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">
+              Sabha Logs
+            </p>
+          </div>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setView("hub")}
+            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-indigo-600"
+          >
+            <ArrowUpLeft size={20} />
+          </motion.button>
+        </header>
+
+        <MonthPicker />
+
+        <div className="space-y-6">
+          {history.filter((s) =>
+            s.date.startsWith(format(currentActiveMonth, "yyyy-MM"))
+          ).length === 0 ? (
+            <div className="text-center py-20 flex flex-col items-center gap-4">
+              <History size={48} className="text-slate-200" />
+              <p className="opacity-30 font-black uppercase text-[10px] tracking-widest">
+                No Logs for this month
+              </p>
+            </div>
+          ) : (
+            history
+              .filter((s) =>
+                s.date.startsWith(format(currentActiveMonth, "yyyy-MM"))
+              )
+              .map((session, i) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  key={session._id || i}
+                  className="bg-white rounded-[2.5rem] p-6 border border-slate-50 shadow-sm mb-4"
+                >
+                  <div className="flex justify-between items-center mb-6">
+                    <div>
+                      <h3 className="font-black text-slate-900 text-xl tracking-tighter uppercase leading-none">
+                        {format(new Date(session.date), "do MMMM")}
+                      </h3>
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2">
+                        Attendance Summary
+                      </p>
+                    </div>
+                    <div className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-black shadow-lg shadow-slate-200">
+                      {
+                        session.attendanceList?.filter(
+                          (it) => it.status === "Present"
+                        ).length
+                      }
+                      /{session.attendanceList?.length}
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    {session.attendanceList?.map((log, idx) => (
+                      <div
+                        key={idx}
+                        className="flex justify-between items-center bg-slate-50/50 px-5 py-4 rounded-2xl border border-slate-100/30"
+                      >
+                        <span className="font-bold text-slate-700 text-sm">
+                          {formatName(log.fullName)}
+                        </span>
+                        <span
+                          className={`text-[8px] font-black uppercase px-2 py-1 rounded-lg ${
+                            log.status === "Present"
+                              ? "bg-emerald-50 text-emerald-600"
+                              : "bg-red-50 text-red-600"
+                          }`}
+                        >
+                          {log.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))
+          )}
+        </div>
+      </div>
+    );
 
   return null;
 }

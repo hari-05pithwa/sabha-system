@@ -115,10 +115,15 @@
 //   );
 // }
 
+
+
+
+
 "use client";
+import { useState } from "react"; // Added useState
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import {
   UserPlus,
   CalendarCheck2,
@@ -127,10 +132,17 @@ import {
   ChevronRight,
   LayoutGrid,
   Settings,
+  Loader2, // Added Loader2
 } from "lucide-react";
 
 export default function HomePage() {
   const { data: session } = useSession();
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // New State
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await signOut();
+  };
 
   const menuItems = [
     {
@@ -159,33 +171,60 @@ export default function HomePage() {
     },
   ];
 
+  const smoothTransition = {
+    type: "spring",
+    duration: 0.5,
+    bounce: 0.2,
+    ease: [0.22, 1, 0.36, 1],
+  };
+
   const containerVars = {
-    animate: { transition: { staggerChildren: 0.15 } },
+    animate: { 
+      transition: { 
+        staggerChildren: 0.08,
+        delayChildren: 0.1 
+      } 
+    },
   };
 
   const itemVars = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 15, scale: 0.98 },
     animate: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      scale: 1,
+      transition: smoothTransition,
     },
   };
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col font-sans relative overflow-hidden">
-      {/* Background Mesh Gradient */}
+      {/* Loading Overlay for Logout */}
+      <AnimatePresence>
+        {isLoggingOut && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-white/60 backdrop-blur-md flex flex-col items-center justify-center"
+          >
+            <Loader2 className="w-10 h-10 text-indigo-600 animate-spin mb-4" />
+            <p className="text-indigo-600 font-black tracking-widest uppercase text-xs">Logging out...</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute top-[-5%] right-[-5%] w-[50%] h-[40%] bg-indigo-50/60 blur-[100px] rounded-full" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[40%] h-[30%] bg-blue-50/50 blur-[100px] rounded-full" />
+        <div className="absolute top-[-5%] right-[-5%] w-[50%] h-[40%] bg-indigo-50/40 blur-[100px] rounded-full" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[40%] h-[30%] bg-blue-50/30 blur-[100px] rounded-full" />
       </div>
 
       <div className="flex-1 max-w-2xl mx-auto w-full">
-        {/* Top Profile Bar */}
         <header className="px-7 pt-14 pb-10 flex justify-between items-start">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={smoothTransition}
             className="space-y-1"
           >
             <div className="flex items-center gap-2 mb-6">
@@ -203,24 +242,33 @@ export default function HomePage() {
           </motion.div>
 
           <motion.button
-            whileHover={{ rotate: 15, scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => signOut()}
-            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] border border-slate-100 text-slate-400 hover:text-red-500 transition-colors"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ rotate: 15, scale: 1.05 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] border border-slate-100 text-slate-400 hover:text-red-500 transition-colors disabled:opacity-50"
           >
-            <LogOut className="w-5 h-5" />
+            {isLoggingOut ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <LogOut className="w-5 h-5" />
+            )}
           </motion.button>
         </header>
 
-        {/* Dashboard Title */}
-        <div className="px-8 mb-6 flex items-center gap-2">
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          className="px-8 mb-6 flex items-center gap-2"
+        >
           <LayoutGrid size={16} className="text-slate-400" />
           <span className="text-slate-400 font-bold text-xs uppercase tracking-widest">
             Quick Actions
           </span>
-        </div>
+        </motion.div>
 
-        {/* Action Grid */}
         <motion.div
           variants={containerVars}
           initial="initial"
@@ -231,17 +279,17 @@ export default function HomePage() {
             <Link href={item.link} key={idx} className="block group">
               <motion.div
                 variants={itemVars}
-                whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -4, scale: 1.01 }}
+                whileTap={{ scale: 0.97 }}
+                style={{ willChange: "transform, opacity" }}
                 className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.06)] flex items-center gap-6 relative overflow-hidden"
               >
-                {/* Decorative background element for card */}
                 <div
-                  className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} opacity-[0.03] rounded-full translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-500`}
+                  className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} opacity-[0.03] rounded-full translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-700 ease-out`}
                 />
 
                 <div
-                  className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-[1.25rem] flex items-center justify-center text-white shadow-2xl ${item.shadow} group-hover:rotate-6 transition-transform duration-300`}
+                  className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-[1.25rem] flex items-center justify-center text-white shadow-2xl ${item.shadow} group-hover:rotate-6 transition-transform duration-500 ease-out`}
                 >
                   {item.icon}
                 </div>
@@ -255,7 +303,7 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-300">
+                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 transition-all duration-300">
                   <ChevronRight
                     className="text-slate-300 group-hover:text-white transition-colors"
                     size={20}
@@ -266,12 +314,12 @@ export default function HomePage() {
           ))}
         </motion.div>
 
-        {/* Info Card / News */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mx-6 mt-10 p-6 rounded-[2rem] bg-indigo-900 text-white relative overflow-hidden shadow-2xl shadow-indigo-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, ...smoothTransition }}
+          style={{ willChange: "transform, opacity" }}
+          className="mx-6 mt-10 p-6 rounded-[2rem] bg-indigo-900 text-white relative overflow-hidden shadow-2xl shadow-indigo-200/40"
         >
           <div className="relative z-10">
             <h4 className="font-bold text-indigo-200 text-xs uppercase tracking-widest mb-2">
@@ -286,7 +334,6 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      {/* Footer */}
       <footer className="py-12 text-center relative z-10">
         <div className="h-[1px] w-12 bg-slate-200 mx-auto mb-6" />
         <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">

@@ -176,12 +176,11 @@
 // }
 
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
-  Camera,
   Phone,
   MapPin,
   CheckCircle2,
@@ -189,6 +188,8 @@ import {
   Cake,
   GraduationCap,
   ChevronDown,
+  User,
+  Sparkles,
 } from "lucide-react";
 import CameraCapture from "@/components/CameraCapture";
 import { toast } from "sonner";
@@ -209,7 +210,6 @@ export default function RegistrationPage() {
     standard: "",
   });
 
-  // Updated standards list
   const standards = [
     "Jr. KG",
     "Sr. KG",
@@ -238,13 +238,11 @@ export default function RegistrationPage() {
     ) {
       return toast.error("Please fill all required fields");
     }
-
     if (hasNumber && !/^\d{10}$/.test(formData.mobileNumber)) {
-      return toast.error("Please enter a valid 10-digit mobile number");
+      return toast.error("Enter a valid 10-digit number");
     }
-
     if (!photoUrlRef.current) {
-      return toast.error("Please capture a profile photo");
+      return toast.error("Profile photo is mandatory");
     }
 
     setLoading(true);
@@ -262,6 +260,7 @@ export default function RegistrationPage() {
       if (res.ok) {
         toast.success("Balak Registered Successfully!");
         router.push("/");
+        router.refresh();
       } else {
         toast.error("Failed to register.");
       }
@@ -288,30 +287,32 @@ export default function RegistrationPage() {
         >
           <ArrowLeft size={20} />
         </motion.button>
-        <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">
-          Enrollment
-        </h1>
+        <div className="text-center">
+          <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">
+            Enrollment
+          </h1>
+          <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest flex items-center justify-center gap-1">
+            <Sparkles size={10} /> Balak Sabha
+          </p>
+        </div>
         <div className="w-11" />
       </header>
 
       <div className="bg-white rounded-[3.5rem] p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] border border-white relative z-10">
         <div className="mb-10 flex flex-col items-center">
-          <div className="relative group">
-            <CameraCapture
-              onUpload={(url) => {
-                photoUrlRef.current = url;
-              }}
-            />
-          </div>
-          <p className="mt-4 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">
-            Capture Profile
-          </p>
+          <CameraCapture
+            onUpload={(url) => {
+              photoUrlRef.current = url;
+            }}
+          />
         </div>
 
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className={labelStyle}>First Name</label>
+              <label className={labelStyle}>
+                <User size={12} className="inline mr-1" /> First Name
+              </label>
               <input
                 className={inputStyle}
                 placeholder="Firstname"
@@ -335,79 +336,59 @@ export default function RegistrationPage() {
           </div>
 
           <div className="space-y-1">
-            <label className={labelStyle}>Date of Birth</label>
-            <div className="relative group">
-              <Cake className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
-              <input
-                type="date"
-                className={`${inputStyle} pl-12 cursor-pointer`}
-                value={formData.dob}
-                onChange={(e) =>
-                  setFormData({ ...formData, dob: e.target.value })
-                }
-              />
-            </div>
+            <label className={labelStyle}>
+              <Cake size={12} className="inline mr-1" /> Birth Date
+            </label>
+            <input
+              type="date"
+              className={inputStyle}
+              value={formData.dob}
+              onChange={(e) =>
+                setFormData({ ...formData, dob: e.target.value })
+              }
+            />
           </div>
 
-          {/* CUSTOM THEMED DROPDOWN - Optimized Height */}
           <div className="space-y-1 relative">
-            <label className={labelStyle}>Standard</label>
+            <label className={labelStyle}>
+              <GraduationCap size={12} className="inline mr-1" /> Standard
+            </label>
             <button
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`${inputStyle} pl-12 pr-10 text-left flex items-center justify-between relative`}
+              className={`${inputStyle} text-left flex items-center justify-between`}
             >
-              <GraduationCap
-                className={`absolute left-5 w-4 h-4 transition-colors ${
-                  formData.standard ? "text-indigo-500" : "text-slate-300"
-                }`}
-              />
               <span
                 className={
                   formData.standard ? "text-slate-800" : "text-slate-300"
                 }
               >
-                {formData.standard || "Select Current Class"}
+                {formData.standard || "Select Class"}
               </span>
-              <motion.div animate={{ rotate: isDropdownOpen ? 180 : 0 }}>
-                <ChevronDown size={18} className="text-slate-400" />
-              </motion.div>
+              <ChevronDown size={18} className="text-slate-400" />
             </button>
-
             <AnimatePresence>
               {isDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-20"
-                    onClick={() => setIsDropdownOpen(false)}
-                  />
-
-                  <motion.div
-                    initial={{ opacity: 0, y: -5, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 5, scale: 1 }}
-                    exit={{ opacity: 0, y: -5, scale: 0.98 }}
-                    // Added max-height and custom scrollbar
-                    className="absolute z-30 w-full bg-white/90 backdrop-blur-xl border border-slate-100 rounded-[1.5rem] shadow-2xl overflow-y-auto max-h-[220px] py-2 custom-scrollbar"
-                  >
-                    {standards.map((std) => (
-                      <button
-                        key={std}
-                        type="button"
-                        onClick={() => {
-                          setFormData({ ...formData, standard: std });
-                          setIsDropdownOpen(false);
-                        }}
-                        // Slightly reduced py-3 for better density
-                        className="w-full px-6 py-3 text-left font-bold text-slate-700 hover:bg-indigo-500 hover:text-white transition-all flex items-center justify-between group text-sm"
-                      >
-                        {std}
-                        {formData.standard === std && (
-                          <CheckCircle2 size={16} />
-                        )}
-                      </button>
-                    ))}
-                  </motion.div>
-                </>
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 5 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className="absolute z-30 w-full bg-white border border-slate-100 rounded-2xl shadow-2xl overflow-y-auto max-h-[200px] py-2 custom-scrollbar"
+                >
+                  {standards.map((std) => (
+                    <button
+                      key={std}
+                      type="button"
+                      onClick={() => {
+                        setFormData({ ...formData, standard: std });
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full px-6 py-3 text-left font-bold text-slate-700 hover:bg-indigo-500 hover:text-white transition-all text-sm"
+                    >
+                      {std}
+                    </button>
+                  ))}
+                </motion.div>
               )}
             </AnimatePresence>
           </div>
@@ -415,14 +396,11 @@ export default function RegistrationPage() {
           <div className="bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100/80">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                  <Phone
-                    className={`w-4 h-4 ${
-                      hasNumber ? "text-indigo-600" : "text-slate-300"
-                    }`}
-                  />
-                </div>
-                <span className="text-xs font-black uppercase tracking-widest text-slate-600">
+                <Phone
+                  size={16}
+                  className={hasNumber ? "text-indigo-600" : "text-slate-300"}
+                />
+                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
                   Mobile Number
                 </span>
               </div>
@@ -441,50 +419,39 @@ export default function RegistrationPage() {
                 />
               </button>
             </div>
-            <AnimatePresence mode="wait">
-              {hasNumber && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden"
-                >
-                  <input
-                    className={inputStyle}
-                    type="tel"
-                    placeholder="Number"
-                    value={formData.mobileNumber}
-                    onChange={(e) =>
-                      setFormData({ ...formData, mobileNumber: e.target.value })
-                    }
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {hasNumber && (
+              <input
+                className={inputStyle}
+                type="tel"
+                placeholder="10 Digit Number"
+                value={formData.mobileNumber}
+                onChange={(e) =>
+                  setFormData({ ...formData, mobileNumber: e.target.value })
+                }
+              />
+            )}
           </div>
 
           <div className="space-y-1">
-            <label className={labelStyle}>Residential Address</label>
-            <div className="relative group">
-              <MapPin className="absolute left-5 top-5 w-4 h-4 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />
-              <textarea
-                rows="3"
-                className={`${inputStyle} pl-12 pt-5 resize-none`}
-                placeholder="House No, Society, Landmark..."
-                value={formData.address}
-                onChange={(e) =>
-                  setFormData({ ...formData, address: e.target.value })
-                }
-              />
-            </div>
+            <label className={labelStyle}>
+              <MapPin size={12} className="inline mr-1" /> Address
+            </label>
+            <textarea
+              rows="2"
+              className={`${inputStyle} pt-4 resize-none`}
+              placeholder="Residential details..."
+              value={formData.address}
+              onChange={(e) =>
+                setFormData({ ...formData, address: e.target.value })
+              }
+            />
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.97 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleRegister}
             disabled={loading}
-            className="w-full bg-slate-900 text-white font-black py-5 rounded-[2.5rem] shadow-2xl shadow-indigo-100 flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs mt-6 transition-all hover:bg-indigo-600 disabled:opacity-70"
+            className="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs mt-4 disabled:opacity-70"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -496,14 +463,9 @@ export default function RegistrationPage() {
           </motion.button>
         </div>
       </div>
-
-      {/* Optional: Add this to your globals.css for a clean scrollbar inside the dropdown */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: #e2e8f0;
