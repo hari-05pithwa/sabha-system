@@ -286,9 +286,9 @@ export default function RegistrationPage() {
           <ArrowLeft size={20} />
         </motion.button>
         <div className="text-center">
-          <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">Enrollment</h1>
+          <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">Registration</h1>
           <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest flex items-center justify-center gap-1">
-            <Sparkles size={10} /> Balak Sabha
+            Balak Sabha
           </p>
         </div>
         <div className="w-11" />
