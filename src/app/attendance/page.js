@@ -788,7 +788,7 @@ export default function AttendanceUnifiedPage() {
           </motion.button>
           <Link
             href="/"
-            className="mt-4 flex items-center justify-center gap-2 bg-slate-50 py-5 rounded-[2rem] text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] border border-slate-100 hover:bg-white transition-all"
+            className=" mt-4 flex items-center justify-center gap-2 bg-slate-100 py-5 rounded-[2rem] text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] border border-slate-200 hover:bg-white transition-all"
           >
             <Home size={14} /> Back to Dashboard
           </Link>
