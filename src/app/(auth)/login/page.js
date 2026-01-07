@@ -659,7 +659,6 @@
 
 
 
-
 "use client";
 import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
@@ -669,7 +668,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, User, ChevronRight, Loader2, Check } from "lucide-react";
 
 export default function LoginPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -677,6 +676,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   // --- PERSISTENCE GUARD ---
+  // If already logged in, bounce to dashboard immediately.
   useEffect(() => {
     if (status === "authenticated") {
       router.replace("/");
@@ -712,7 +712,7 @@ export default function LoginPage() {
         localStorage.removeItem("remembered_karyakar");
       }
 
-      // Format name for Toast
+      // Format name for Toast: bhavik123 -> Bhavik
       const cleanName = username.split(/[0-9]/)[0]; 
       const displayName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
 
@@ -725,9 +725,9 @@ export default function LoginPage() {
     }
   };
 
-  // FIX: Only block the UI if the user is ALREADY authenticated.
-  // We allow "loading" to pass through so the login form is visible 
-  // immediately while NextAuth checks for a session in the background.
+  // ONLY block the UI if the user is DEFINITELY authenticated.
+  // We allow "loading" and "unauthenticated" to pass through so the form 
+  // is visible immediately while NextAuth checks the session.
   if (status === "authenticated") {
     return (
       <div className="min-h-screen bg-[#F8FAFF] flex items-center justify-center">
@@ -824,7 +824,9 @@ export default function LoginPage() {
           <motion.div variants={itemVars} className="mt-10 pt-8 border-t border-slate-50 flex flex-col items-center gap-2">
             <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">BAPS Swaminarayan Sanstha</p>
             <div className="flex gap-1">
-              <div className="w-1 h-1 rounded-full bg-orange-400" /><div className="w-1 h-1 rounded-full bg-orange-400" /><div className="w-1 h-1 rounded-full bg-orange-400" />
+              <div className="w-1 h-1 rounded-full bg-orange-400" />
+              <div className="w-1 h-1 rounded-full bg-orange-400" />
+              <div className="w-1 h-1 rounded-full bg-orange-400" />
             </div>
           </motion.div>
         </div>
