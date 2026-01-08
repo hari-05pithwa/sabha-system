@@ -653,6 +653,254 @@
 
 
 //ai
+// "use client";
+// import { useState, useRef } from "react";
+// import { useRouter } from "next/navigation";
+// import { motion, AnimatePresence } from "framer-motion";
+// import {
+//   ArrowLeft,
+//   Phone,
+//   MapPin,
+//   CheckCircle2,
+//   Loader2,
+//   Cake,
+//   GraduationCap,
+//   ChevronDown,
+//   User,
+//   Sparkles,
+//   CalendarDays
+// } from "lucide-react";
+// import CameraCapture from "@/components/CameraCapture";
+// import { toast } from "sonner";
+
+// export default function RegistrationPage() {
+//   const router = useRouter();
+//   const [loading, setLoading] = useState(false);
+//   const photoUrlRef = useRef("");
+//   const [hasNumber, setHasNumber] = useState(true);
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+//   const [formData, setFormData] = useState({
+//     firstName: "",
+//     lastName: "",
+//     mobileNumber: "",
+//     address: "",
+//     dob: "", // Format: YYYY-MM-DD for API
+//     standard: "",
+//   });
+
+//   const [displayDob, setDisplayDob] = useState(""); // Format: DD/MM/YYYY for UI
+
+//   const standards = ["Jr. KG", "Sr. KG", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
+
+//   const inputStyle = "w-full bg-slate-50/50 border-2 border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-300 text-sm appearance-none";
+//   const labelStyle = "text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400 ml-4 mb-2 block";
+
+//   // --- Fast Date Typing Logic ---
+//   const handleDateChange = (e) => {
+//     let val = e.target.value.replace(/\D/g, ""); 
+//     let formatted = val;
+
+//     if (val.length > 2 && val.length <= 4) {
+//       formatted = `${val.slice(0, 2)}/${val.slice(2)}`;
+//     } else if (val.length > 4) {
+//       formatted = `${val.slice(0, 2)}/${val.slice(2, 4)}/${val.slice(4, 8)}`;
+//     }
+
+//     setDisplayDob(formatted);
+
+//     if (formatted.length === 10) {
+//       const [d, m, y] = formatted.split("/");
+//       setFormData({ ...formData, dob: `${y}-${m}-${d}` });
+//     }
+//   };
+
+//   // --- Real-world Mobile Input Logic ---
+//   const handleMobileChange = (e) => {
+//     const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+//     setFormData({ ...formData, mobileNumber: val });
+//   };
+
+//   // --- Strict A-Z Validation for Names ---
+//   const handleNameInput = (field, value) => {
+//     // Regular expression allows only letters (a-z, A-Z)
+//     if (/^[a-zA-Z]*$/.test(value)) {
+//       setFormData({ ...formData, [field]: value });
+//     }
+//   };
+
+//   const handleRegister = async () => {
+//     if (!formData.firstName || !formData.lastName || !formData.address || !formData.dob || !formData.standard) {
+//       return toast.error("Please fill all required fields");
+//     }
+//     if (hasNumber && formData.mobileNumber.length !== 10) {
+//       return toast.error("Mobile number must be exactly 10 digits");
+//     }
+//     if (!photoUrlRef.current) {
+//       return toast.error("Profile photo is mandatory");
+//     }
+
+//     setLoading(true);
+//     try {
+//       const res = await fetch("/api/balaks", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           ...formData,
+//           mobileNumber: hasNumber ? formData.mobileNumber : "N/A",
+//           photoUrl: photoUrlRef.current,
+//         }),
+//       });
+
+//       if (res.ok) {
+//         toast.success("Balak Registered Successfully!");
+//         router.push("/");
+//         router.refresh();
+//       } else {
+//         toast.error("Failed to register.");
+//       }
+//     } catch (err) {
+//       toast.error("Network error.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="min-h-screen bg-[#FDFDFD] px-6 pt-12 pb-24 font-sans relative overflow-hidden">
+//       <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50/50 blur-3xl rounded-full -mr-32 -mt-32" />
+
+//       <header className="flex items-center justify-between mb-8 relative z-10">
+//         <motion.button whileTap={{ scale: 0.9 }} onClick={() => router.back()} className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-500">
+//           <ArrowLeft size={20} />
+//         </motion.button>
+//         <div className="text-center">
+//           <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">Registration</h1>
+//           <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest flex items-center justify-center gap-1">
+//             Balak Sabha
+//           </p>
+//         </div>
+//         <div className="w-11" />
+//       </header>
+
+//       <div className="bg-white rounded-[3.5rem] p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] border border-white relative z-10">
+//         <div className="mb-10 flex flex-col items-center">
+//           <CameraCapture onUpload={(url) => { photoUrlRef.current = url; }} />
+//         </div>
+
+//         <div className="space-y-6">
+//           <div className="grid grid-cols-2 gap-4">
+//             <div className="space-y-1">
+//               <label className={labelStyle}><User size={12} className="inline mr-1" /> First Name</label>
+//               <input 
+//                 className={inputStyle} 
+//                 placeholder="Firstname" 
+//                 value={formData.firstName} 
+//                 onChange={(e) => handleNameInput("firstName", e.target.value)} 
+//               />
+//             </div>
+//             <div className="space-y-1">
+//               <label className={labelStyle}>Last Name</label>
+//               <input 
+//                 className={inputStyle} 
+//                 placeholder="Surname" 
+//                 value={formData.lastName} 
+//                 onChange={(e) => handleNameInput("lastName", e.target.value)} 
+//               />
+//             </div>
+//           </div>
+
+//           <div className="space-y-1">
+//             <label className={labelStyle}><CalendarDays size={12} className="inline mr-1" /> Birth Date (DD/MM/YYYY)</label>
+//             <div className="relative group">
+//               <Cake className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
+//               <input
+//                 type="text"
+//                 inputMode="numeric"
+//                 className={`${inputStyle} pl-12`}
+//                 placeholder="DD/MM/YYYY"
+//                 value={displayDob}
+//                 maxLength={10}
+//                 onChange={handleDateChange}
+//               />
+//               <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-100 transition-opacity">
+//                 <input 
+//                   type="date" 
+//                   className="absolute inset-0 opacity-0 cursor-pointer w-6" 
+//                   onChange={(e) => {
+//                     const date = e.target.value; 
+//                     if(!date) return;
+//                     const [y, m, d] = date.split("-");
+//                     setFormData({...formData, dob: date});
+//                     setDisplayDob(`${d}/${m}/${y}`);
+//                   }}
+//                 />
+//                 <CalendarDays size={18} className="text-slate-500" />
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="space-y-1 relative">
+//             <label className={labelStyle}><GraduationCap size={12} className="inline mr-1" /> Standard</label>
+//             <button type="button" onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`${inputStyle} text-left flex items-center justify-between`}>
+//               <span className={formData.standard ? "text-slate-800" : "text-slate-300"}>{formData.standard || "Select Class"}</span>
+//               <ChevronDown size={18} className="text-slate-400" />
+//             </button>
+//             <AnimatePresence>
+//               {isDropdownOpen && (
+//                 <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 5 }} exit={{ opacity: 0, y: -5 }} className="absolute z-30 w-full bg-white border border-slate-100 rounded-2xl shadow-2xl overflow-y-auto max-h-[200px] py-2 custom-scrollbar">
+//                   {standards.map((std) => (
+//                     <button key={std} type="button" onClick={() => { setFormData({ ...formData, standard: std }); setIsDropdownOpen(false); }} className="w-full px-6 py-3 text-left font-bold text-slate-700 hover:bg-indigo-500 hover:text-white transition-all text-sm">
+//                       {std}
+//                     </button>
+//                   ))}
+//                 </motion.div>
+//               )}
+//             </AnimatePresence>
+//           </div>
+
+//           <div className="bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100/80">
+//             <div className="flex items-center justify-between mb-4">
+//               <div className="flex items-center gap-3">
+//                 <Phone size={16} className={hasNumber ? "text-indigo-600" : "text-slate-300"} />
+//                 <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600">Mobile Number</span>
+//               </div>
+//               <button type="button" onClick={() => setHasNumber(!hasNumber)} className={`w-11 h-6 rounded-full transition-all relative ${hasNumber ? "bg-indigo-600 shadow-lg shadow-indigo-100" : "bg-slate-200"}`}>
+//                 <motion.div animate={{ x: hasNumber ? 22 : 4 }} className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
+//               </button>
+//             </div>
+//             {hasNumber && (
+//               <input 
+//                 className={inputStyle} 
+//                 type="tel" 
+//                 inputMode="numeric"
+//                 placeholder="10 Digit Number" 
+//                 value={formData.mobileNumber} 
+//                 onChange={handleMobileChange}
+//               />
+//             )}
+//           </div>
+
+//           <div className="space-y-1">
+//             <label className={labelStyle}><MapPin size={12} className="inline mr-1" /> Address</label>
+//             <textarea rows="2" className={`${inputStyle} pt-4 resize-none`} placeholder="Residential details..." value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+//           </div>
+
+//           <motion.button whileTap={{ scale: 0.98 }} onClick={handleRegister} disabled={loading} className="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs mt-4 disabled:opacity-70">
+//             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><CheckCircle2 size={18} /> Register Balak</>}
+//           </motion.button>
+//         </div>
+//       </div>
+//     </motion.div>
+//   );
+// }
+
+
+
+
+
+
+
 "use client";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -667,11 +915,18 @@ import {
   GraduationCap,
   ChevronDown,
   User,
-  Sparkles,
   CalendarDays
 } from "lucide-react";
 import CameraCapture from "@/components/CameraCapture";
 import { toast } from "sonner";
+
+// --- SIMPLE FAST FADE ---
+const simpleFade = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.2 }
+};
 
 export default function RegistrationPage() {
   const router = useRouter();
@@ -681,176 +936,106 @@ export default function RegistrationPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    mobileNumber: "",
-    address: "",
-    dob: "", // Format: YYYY-MM-DD for API
-    standard: "",
+    firstName: "", lastName: "", mobileNumber: "", address: "", dob: "", standard: "",
   });
 
-  const [displayDob, setDisplayDob] = useState(""); // Format: DD/MM/YYYY for UI
-
+  const [displayDob, setDisplayDob] = useState("");
   const standards = ["Jr. KG", "Sr. KG", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 
-  const inputStyle = "w-full bg-slate-50/50 border-2 border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-300 text-sm appearance-none";
-  const labelStyle = "text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400 ml-4 mb-2 block";
+  const inputStyle = "w-full bg-slate-50/50 border-2 border-slate-100 rounded-xl px-4 py-3.5 font-bold text-slate-800 focus:bg-white focus:border-indigo-500 outline-none transition-all placeholder:text-slate-300 text-sm appearance-none";
+  const labelStyle = "text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-2 mb-1.5 block";
 
-  // --- Fast Date Typing Logic ---
   const handleDateChange = (e) => {
-    let val = e.target.value.replace(/\D/g, ""); 
+    let val = e.target.value.replace(/\D/g, "");
     let formatted = val;
-
-    if (val.length > 2 && val.length <= 4) {
-      formatted = `${val.slice(0, 2)}/${val.slice(2)}`;
-    } else if (val.length > 4) {
-      formatted = `${val.slice(0, 2)}/${val.slice(2, 4)}/${val.slice(4, 8)}`;
-    }
-
+    if (val.length > 2 && val.length <= 4) formatted = `${val.slice(0, 2)}/${val.slice(2)}`;
+    else if (val.length > 4) formatted = `${val.slice(0, 2)}/${val.slice(2, 4)}/${val.slice(4, 8)}`;
     setDisplayDob(formatted);
-
     if (formatted.length === 10) {
       const [d, m, y] = formatted.split("/");
       setFormData({ ...formData, dob: `${y}-${m}-${d}` });
     }
   };
 
-  // --- Real-world Mobile Input Logic ---
   const handleMobileChange = (e) => {
     const val = e.target.value.replace(/\D/g, "").slice(0, 10);
     setFormData({ ...formData, mobileNumber: val });
   };
 
-  // --- Strict A-Z Validation for Names ---
   const handleNameInput = (field, value) => {
-    // Regular expression allows only letters (a-z, A-Z)
-    if (/^[a-zA-Z]*$/.test(value)) {
-      setFormData({ ...formData, [field]: value });
-    }
+    if (/^[a-zA-Z]*$/.test(value)) setFormData({ ...formData, [field]: value });
   };
 
   const handleRegister = async () => {
-    if (!formData.firstName || !formData.lastName || !formData.address || !formData.dob || !formData.standard) {
-      return toast.error("Please fill all required fields");
-    }
-    if (hasNumber && formData.mobileNumber.length !== 10) {
-      return toast.error("Mobile number must be exactly 10 digits");
-    }
-    if (!photoUrlRef.current) {
-      return toast.error("Profile photo is mandatory");
-    }
+    if (!formData.firstName || !formData.lastName || !formData.address || !formData.dob || !formData.standard) return toast.error("Fill required fields");
+    if (hasNumber && formData.mobileNumber.length !== 10) return toast.error("Invalid mobile number");
+    if (!photoUrlRef.current) return toast.error("Photo required");
 
     setLoading(true);
     try {
       const res = await fetch("/api/balaks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formData,
-          mobileNumber: hasNumber ? formData.mobileNumber : "N/A",
-          photoUrl: photoUrlRef.current,
-        }),
+        body: JSON.stringify({ ...formData, mobileNumber: hasNumber ? formData.mobileNumber : "N/A", photoUrl: photoUrlRef.current }),
       });
-
       if (res.ok) {
-        toast.success("Balak Registered Successfully!");
+        toast.success("Success!");
         router.push("/");
         router.refresh();
-      } else {
-        toast.error("Failed to register.");
       }
     } catch (err) {
-      toast.error("Network error.");
+      toast.error("Error connecting");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="min-h-screen bg-[#FDFDFD] px-6 pt-12 pb-24 font-sans relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50/50 blur-3xl rounded-full -mr-32 -mt-32" />
-
-      <header className="flex items-center justify-between mb-8 relative z-10">
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => router.back()} className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-500">
-          <ArrowLeft size={20} />
-        </motion.button>
-        <div className="text-center">
-          <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase">Registration</h1>
-          <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest flex items-center justify-center gap-1">
-            Balak Sabha
-          </p>
-        </div>
-        <div className="w-11" />
+    <motion.div {...simpleFade} className="min-h-screen bg-[#FDFDFD] px-5 pt-8 pb-20 overflow-x-hidden">
+      <header className="flex items-center justify-between mb-6">
+        <button onClick={() => router.back()} className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 text-slate-500 active:scale-95 transition-transform">
+          <ArrowLeft size={18} />
+        </button>
+        <h1 className="text-lg font-black text-slate-900 uppercase">Registration</h1>
+        <div className="w-10" />
       </header>
 
-      <div className="bg-white rounded-[3.5rem] p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] border border-white relative z-10">
-        <div className="mb-10 flex flex-col items-center">
+      <div className="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-50">
+        <div className="mb-8 flex flex-col items-center">
           <CameraCapture onUpload={(url) => { photoUrlRef.current = url; }} />
         </div>
 
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className={labelStyle}><User size={12} className="inline mr-1" /> First Name</label>
-              <input 
-                className={inputStyle} 
-                placeholder="Firstname" 
-                value={formData.firstName} 
-                onChange={(e) => handleNameInput("firstName", e.target.value)} 
-              />
+        <div className="space-y-5">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelStyle}>First Name</label>
+              <input className={inputStyle} placeholder="Firstname" value={formData.firstName} onChange={(e) => handleNameInput("firstName", e.target.value)} />
             </div>
-            <div className="space-y-1">
+            <div>
               <label className={labelStyle}>Last Name</label>
-              <input 
-                className={inputStyle} 
-                placeholder="Surname" 
-                value={formData.lastName} 
-                onChange={(e) => handleNameInput("lastName", e.target.value)} 
-              />
+              <input className={inputStyle} placeholder="Surname" value={formData.lastName} onChange={(e) => handleNameInput("lastName", e.target.value)} />
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className={labelStyle}><CalendarDays size={12} className="inline mr-1" /> Birth Date (DD/MM/YYYY)</label>
-            <div className="relative group">
-              <Cake className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
-              <input
-                type="text"
-                inputMode="numeric"
-                className={`${inputStyle} pl-12`}
-                placeholder="DD/MM/YYYY"
-                value={displayDob}
-                maxLength={10}
-                onChange={handleDateChange}
-              />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-100 transition-opacity">
-                <input 
-                  type="date" 
-                  className="absolute inset-0 opacity-0 cursor-pointer w-6" 
-                  onChange={(e) => {
-                    const date = e.target.value; 
-                    if(!date) return;
-                    const [y, m, d] = date.split("-");
-                    setFormData({...formData, dob: date});
-                    setDisplayDob(`${d}/${m}/${y}`);
-                  }}
-                />
-                <CalendarDays size={18} className="text-slate-500" />
-              </div>
+          <div>
+            <label className={labelStyle}>Birth Date</label>
+            <div className="relative">
+              <input type="text" inputMode="numeric" className={inputStyle} placeholder="DD/MM/YYYY" value={displayDob} maxLength={10} onChange={handleDateChange} />
+              <CalendarDays size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300" />
             </div>
           </div>
 
-          <div className="space-y-1 relative">
-            <label className={labelStyle}><GraduationCap size={12} className="inline mr-1" /> Standard</label>
+          <div className="relative">
+            <label className={labelStyle}>Standard</label>
             <button type="button" onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`${inputStyle} text-left flex items-center justify-between`}>
               <span className={formData.standard ? "text-slate-800" : "text-slate-300"}>{formData.standard || "Select Class"}</span>
-              <ChevronDown size={18} className="text-slate-400" />
+              <ChevronDown size={16} />
             </button>
             <AnimatePresence>
               {isDropdownOpen && (
-                <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 5 }} exit={{ opacity: 0, y: -5 }} className="absolute z-30 w-full bg-white border border-slate-100 rounded-2xl shadow-2xl overflow-y-auto max-h-[200px] py-2 custom-scrollbar">
+                <motion.div {...simpleFade} className="absolute z-30 w-full bg-white border border-slate-100 rounded-xl shadow-2xl overflow-y-auto max-h-[180px] py-2 mt-1">
                   {standards.map((std) => (
-                    <button key={std} type="button" onClick={() => { setFormData({ ...formData, standard: std }); setIsDropdownOpen(false); }} className="w-full px-6 py-3 text-left font-bold text-slate-700 hover:bg-indigo-500 hover:text-white transition-all text-sm">
+                    <button key={std} type="button" onClick={() => { setFormData({ ...formData, standard: std }); setIsDropdownOpen(false); }} className="w-full px-5 py-3 text-left font-bold text-slate-700 active:bg-indigo-50 text-sm">
                       {std}
                     </button>
                   ))}
@@ -859,36 +1044,26 @@ export default function RegistrationPage() {
             </AnimatePresence>
           </div>
 
-          <div className="bg-slate-50/50 p-6 rounded-[2.5rem] border border-slate-100/80">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <Phone size={16} className={hasNumber ? "text-indigo-600" : "text-slate-300"} />
-                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-600">Mobile Number</span>
-              </div>
-              <button type="button" onClick={() => setHasNumber(!hasNumber)} className={`w-11 h-6 rounded-full transition-all relative ${hasNumber ? "bg-indigo-600 shadow-lg shadow-indigo-100" : "bg-slate-200"}`}>
-                <motion.div animate={{ x: hasNumber ? 22 : 4 }} className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
+          <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Parent Number</span>
+              <button type="button" onClick={() => setHasNumber(!hasNumber)} className={`w-10 h-5 rounded-full relative transition-colors ${hasNumber ? "bg-indigo-600" : "bg-slate-300"}`}>
+                <motion.div animate={{ x: hasNumber ? 20 : 4 }} className="absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm" />
               </button>
             </div>
             {hasNumber && (
-              <input 
-                className={inputStyle} 
-                type="tel" 
-                inputMode="numeric"
-                placeholder="10 Digit Number" 
-                value={formData.mobileNumber} 
-                onChange={handleMobileChange}
-              />
+              <input className={inputStyle} type="tel" inputMode="numeric" placeholder="10 Digit Number" value={formData.mobileNumber} onChange={handleMobileChange} />
             )}
           </div>
 
-          <div className="space-y-1">
-            <label className={labelStyle}><MapPin size={12} className="inline mr-1" /> Address</label>
-            <textarea rows="2" className={`${inputStyle} pt-4 resize-none`} placeholder="Residential details..." value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+          <div>
+            <label className={labelStyle}>Address</label>
+            <textarea rows="2" className={`${inputStyle} resize-none`} placeholder="Residential details..." value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
           </div>
 
-          <motion.button whileTap={{ scale: 0.98 }} onClick={handleRegister} disabled={loading} className="w-full bg-slate-900 text-white font-black py-5 rounded-3xl shadow-xl flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs mt-4 disabled:opacity-70">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><CheckCircle2 size={18} /> Register Balak</>}
-          </motion.button>
+          <button onClick={handleRegister} disabled={loading} className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest text-xs active:bg-indigo-600 disabled:opacity-50">
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <><CheckCircle2 size={16} /> Register</>}
+          </button>
         </div>
       </div>
     </motion.div>
