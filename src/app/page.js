@@ -529,10 +529,6 @@
 //   );
 // }
 
-
-
-
-
 //ai1
 
 // "use client";
@@ -735,12 +731,6 @@
 //   );
 // }
 
-
-
-
-
-
-
 // ai2
 // "use client";
 // import { useState, useEffect, useMemo } from "react";
@@ -886,15 +876,15 @@
 //       {/* 1. INSTANT LOGOUT OVERLAY */}
 //      <AnimatePresence>
 //   {isLoggingOut && (
-//     <motion.div 
-//       initial={{ opacity: 0 }} 
-//       animate={{ opacity: 1 }} 
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
 //       exit={{ opacity: 0 }}
 //       // Use fixed inset-0 with h-screen and w-screen to force viewport coverage
 //       // z-[999] ensures it sits above every other element in the app
 //       className="fixed inset-0 z-[999] h-screen w-screen bg-white/60 backdrop-blur-3xl flex items-center justify-center pointer-events-auto"
 //     >
-//       <motion.div 
+//       <motion.div
 //         initial={{ scale: 0.9, opacity: 0, y: 10 }}
 //         animate={{ scale: 1, opacity: 1, y: 0 }}
 //         transition={{ type: "spring", stiffness: 400, damping: 30 }}
@@ -906,12 +896,12 @@
 //            {/* Subtle glow behind spinner */}
 //            <div className="absolute inset-0 blur-2xl bg-indigo-500/20 -z-10" />
 //         </div>
-        
+
 //         {/* Optically Centered Text */}
 //         <p className="text-indigo-900 font-black uppercase tracking-[0.4em] text-[11px] ml-[0.4em] text-center">
 //           Logging out
 //         </p>
-        
+
 //       </motion.div>
 //     </motion.div>
 //   )}
@@ -1032,12 +1022,6 @@
 //   );
 // }
 
-
-
-
-
-
-
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
@@ -1060,13 +1044,13 @@ const simpleFade = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
-  transition: { duration: 0.2, ease: "linear" }
+  transition: { duration: 0.2, ease: "linear" },
 };
 
 const staggerContainer = {
   animate: {
-    transition: { staggerChildren: 0.03 }
-  }
+    transition: { staggerChildren: 0.03 },
+  },
 };
 
 const HomeSkeleton = () => (
@@ -1083,7 +1067,10 @@ const HomeSkeleton = () => (
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {[1, 2, 3, 4].map((i) => (
-        <div key={i} className="h-32 bg-slate-50 rounded-[2rem] border border-slate-100" />
+        <div
+          key={i}
+          className="h-32 bg-slate-50 rounded-[2rem] border border-slate-100"
+        />
       ))}
     </div>
   </motion.div>
@@ -1107,28 +1094,64 @@ export default function HomePage() {
     await signOut({ callbackUrl: "/login", redirect: true });
   };
 
-  const menuItems = useMemo(() => [
-    { title: "Registration", desc: "New Enrollments", icon: <UserPlus size={22} />, link: "/registration", color: "bg-indigo-500/10", iconColor: "text-indigo-600" },
-    { title: "Attendance", desc: "Bal Sabha", icon: <CalendarCheck2 size={22} />, link: "/attendance", color: "bg-blue-500/10", iconColor: "text-blue-600" },
-    { title: "Database", desc: "Sabha Records", icon: <Database size={22} />, link: "/data", color: "bg-emerald-500/10", iconColor: "text-emerald-600" },
-    ...(session?.user?.role === "Admin" ? [{ title: "Admin Panel", desc: "System Master", icon: <ShieldCheck size={22} />, link: "/admin", color: "bg-rose-500/10", iconColor: "text-rose-600" }] : []),
-  ], [session]);
+  const menuItems = useMemo(
+    () => [
+      {
+        title: "Registration",
+        desc: "New Enrollments",
+        icon: <UserPlus size={22} />,
+        link: "/registration",
+        color: "bg-indigo-500/10",
+        iconColor: "text-indigo-600",
+      },
+      {
+        title: "Attendance",
+        desc: "Bal Sabha",
+        icon: <CalendarCheck2 size={22} />,
+        link: "/attendance",
+        color: "bg-blue-500/10",
+        iconColor: "text-blue-600",
+      },
+      {
+        title: "Database",
+        desc: "Sabha Records",
+        icon: <Database size={22} />,
+        link: "/data",
+        color: "bg-emerald-500/10",
+        iconColor: "text-emerald-600",
+      },
+      ...(session?.user?.role === "Admin"
+        ? [
+            {
+              title: "Admin Panel",
+              desc: "System Master",
+              icon: <ShieldCheck size={22} />,
+              link: "/admin",
+              color: "bg-rose-500/10",
+              iconColor: "text-rose-600",
+            },
+          ]
+        : []),
+    ],
+    [session]
+  );
 
   if (!isMounted) return <div className="min-h-screen bg-white" />;
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col font-sans relative overflow-x-hidden selection:bg-indigo-100">
-      
       {/* 1. LOGOUT OVERLAY */}
       <AnimatePresence>
         {isLoggingOut && (
-          <motion.div 
+          <motion.div
             {...simpleFade}
             className="fixed inset-0 z-[999] h-screen w-screen bg-white/80 backdrop-blur-xl flex items-center justify-center"
           >
             <div className="flex flex-col items-center">
               <Loader2 className="w-10 h-10 text-indigo-600 animate-spin mb-4" />
-              <p className="text-indigo-900 font-black uppercase tracking-[0.3em] text-[10px]">Logging out</p>
+              <p className="text-indigo-900 font-black uppercase tracking-[0.3em] text-[10px]">
+                Logging out
+              </p>
             </div>
           </motion.div>
         )}
@@ -1153,15 +1176,22 @@ export default function HomePage() {
           >
             {/* 3. HEADER */}
             <header className="flex justify-between items-start mb-10 md:mb-14">
-              <motion.div variants={simpleFade}>
+              <motion.div variants={simpleFade} className="flex-1 min-w-0 mr-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-1.5 w-1.5 rounded-full bg-indigo-600" />
-                  <p className="text-slate-400 font-black text-[9px] uppercase tracking-[0.3em] truncate max-w-[150px] md:max-w-none">
+                  {/* Status Indicator */}
+                  <div className="h-1.5 w-1.5 rounded-full bg-indigo-600 shrink-0" />
+
+                  {/* Fixed Area Name: Removed truncate and max-width */}
+                  <p className="text-slate-400 font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] leading-relaxed">
                     {session.user?.area || "Digital Portal"}
                   </p>
                 </div>
-                <h1 className="text-2xl md:text-3xl font-medium text-slate-400 tracking-tight leading-none mb-2">Jai Swaminarayan,</h1>
-                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900">
+
+                <h1 className="text-2xl md:text-3xl font-medium text-slate-400 tracking-tight leading-none mb-2">
+                  Jai Swaminarayan,
+                </h1>
+
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 leading-[0.9]">
                   {session.user?.name?.split(" ")[0] || "Karyakar"}
                 </h2>
               </motion.div>
@@ -1178,16 +1208,22 @@ export default function HomePage() {
             {/* 4. RESPONSIVE GRID */}
             <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {menuItems.map((item, idx) => (
-                <Link 
-                  href={item.link} 
-                  key={idx} 
-                  className={`block group ${idx === 0 || idx === menuItems.length - 1 ? 'lg:col-span-2' : ''}`}
+                <Link
+                  href={item.link}
+                  key={idx}
+                  className={`block group ${
+                    idx === 0 || idx === menuItems.length - 1
+                      ? "lg:col-span-2"
+                      : ""
+                  }`}
                 >
                   <motion.div
                     variants={simpleFade}
                     className="bg-white/70 backdrop-blur-md p-6 md:p-8 h-full rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between hover:border-indigo-100 active:scale-[0.98] transition-all"
                   >
-                    <div className={`w-12 h-12 ${item.color} ${item.iconColor} rounded-xl flex items-center justify-center mb-10`}>
+                    <div
+                      className={`w-12 h-12 ${item.color} ${item.iconColor} rounded-xl flex items-center justify-center mb-10`}
+                    >
                       {item.icon}
                     </div>
 
@@ -1196,7 +1232,9 @@ export default function HomePage() {
                         {item.title}
                         <ChevronRight size={16} className="text-slate-300" />
                       </h3>
-                      <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest">{item.desc}</p>
+                      <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest">
+                        {item.desc}
+                      </p>
                     </div>
                   </motion.div>
                 </Link>
@@ -1212,9 +1250,15 @@ export default function HomePage() {
                 <Zap size={24} className="text-indigo-400 fill-indigo-400/20" />
               </div>
               <div className="text-center md:text-left">
-                <h4 className="font-bold text-indigo-400/60 text-[9px] uppercase tracking-[0.4em] mb-2 md:mb-3">Portal Insight</h4>
+                <h4 className="font-bold text-indigo-400/60 text-[9px] uppercase tracking-[0.4em] mb-2 md:mb-3">
+                  Portal Insight
+                </h4>
                 <p className="text-lg md:text-xl text-white leading-snug font-medium">
-                  Follow-ups increase <span className="text-indigo-400 font-bold">participation by 40%</span>.
+                  Follow-ups increase{" "}
+                  <span className="text-indigo-400 font-bold">
+                    participation by 40%
+                  </span>
+                  .
                 </p>
               </div>
             </motion.div>
@@ -1223,7 +1267,9 @@ export default function HomePage() {
       </AnimatePresence>
 
       <footer className="py-16 md:py-24 text-center opacity-30">
-        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-900 px-4">BAPS SWAMINARAYAN SANSTHA</p>
+        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-900 px-4">
+          BAPS SWAMINARAYAN SANSTHA
+        </p>
       </footer>
     </div>
   );
