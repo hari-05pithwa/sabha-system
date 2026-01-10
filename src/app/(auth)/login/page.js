@@ -44,7 +44,7 @@
 //       }
 
 //       toast.success("Welcome back! Redirecting...");
-      
+
 //       // Using a slightly longer delay for a smoother visual transition on mobile
 //       setTimeout(() => {
 //         router.push("/");
@@ -60,9 +60,9 @@
 //       opacity: 1,
 //       scale: 1,
 //       y: 0,
-//       transition: { 
-//         duration: 0.5, 
-//         staggerChildren: 0.08, 
+//       transition: {
+//         duration: 0.5,
+//         staggerChildren: 0.08,
 //         ease: [0.22, 1, 0.36, 1] // Custom cubic-bezier for "Apple-like" feel
 //       },
 //     },
@@ -70,8 +70,8 @@
 
 //   const itemVars = {
 //     hidden: { opacity: 0, y: 10 },
-//     visible: { 
-//       opacity: 1, 
+//     visible: {
+//       opacity: 1,
 //       y: 0,
 //       transition: { duration: 0.4, ease: "easeOut" }
 //     },
@@ -230,14 +230,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
 //imp
 
 // "use client";
@@ -289,11 +281,11 @@
 //       // 1. Take the username (e.g., bhavik13329)
 //       // 2. Split by any digit to get just the alphabetic name (bhavik)
 //       // 3. Capitalize the first letter and keep the rest of the name intact
-//       const cleanName = username.split(/[0-9]/)[0]; 
+//       const cleanName = username.split(/[0-9]/)[0];
 //       const displayName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
 
 //       toast.success(`Welcome back, ${displayName}!`);
-      
+
 //       // Hardware-accelerated transition delay
 //       setTimeout(() => {
 //         router.push("/");
@@ -309,18 +301,18 @@
 //       opacity: 1,
 //       scale: 1,
 //       y: 0,
-//       transition: { 
-//         duration: 0.5, 
-//         staggerChildren: 0.08, 
-//         ease: [0.22, 1, 0.36, 1] 
+//       transition: {
+//         duration: 0.5,
+//         staggerChildren: 0.08,
+//         ease: [0.22, 1, 0.36, 1]
 //       },
 //     },
 //   };
 
 //   const itemVars = {
 //     hidden: { opacity: 0, y: 10 },
-//     visible: { 
-//       opacity: 1, 
+//     visible: {
+//       opacity: 1,
 //       y: 0,
 //       transition: { duration: 0.4, ease: "easeOut" }
 //     },
@@ -369,7 +361,7 @@
 //                   type="text"
 //                   autoComplete="username"
 //                   required
-//                   className="w-full pl-14 pr-7 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all duration-300 font-semibold text-slate-700 placeholder:text-slate-300 text-[16px]" 
+//                   className="w-full pl-14 pr-7 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all duration-300 font-semibold text-slate-700 placeholder:text-slate-300 text-[16px]"
 //                   value={username}
 //                   onChange={(e) => setUsername(e.target.value)}
 //                   placeholder="Enter your ID"
@@ -479,25 +471,224 @@
 //   );
 // }
 
+// //ai
+// "use client";
+// import { useState, useEffect } from "react";
+// import { signIn } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+// import { toast } from "sonner";
+// import { motion } from "framer-motion";
+// import { Lock, User, ChevronRight, Loader2, Check } from "lucide-react";
 
+// export default function LoginPage() {
+//   const [username, setUsername] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [rememberMe, setRememberMe] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   const router = useRouter();
 
-//ai
+//   // Load remembered user instantly on mount
+//   useEffect(() => {
+//     const savedUser = localStorage.getItem("remembered_karyakar");
+//     if (savedUser) {
+//       setUsername(savedUser);
+//       setRememberMe(true);
+//     }
+//   }, []);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     const result = await signIn("credentials", {
+//       username,
+//       password,
+//       redirect: false,
+//     });
+
+//     if (result?.error) {
+//       toast.error("Access Denied. Check credentials.");
+//       setLoading(false);
+//     } else {
+//       if (rememberMe) localStorage.setItem("remembered_karyakar", username);
+//       else localStorage.removeItem("remembered_karyakar");
+
+//       const cleanName = username.split(/[0-9]/)[0];
+//       const displayName =
+//         cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
+
+//       toast.success(`Identity Verified: ${displayName}`);
+
+//       setTimeout(() => {
+//         router.push("/");
+//         router.refresh();
+//       }, 100); // Faster redirect
+//     }
+//   };
+
+//   return (
+//     <div className="flex items-center justify-center min-h-screen bg-[#FDFDFD] p-4 sm:p-6 font-sans selection:bg-indigo-100 overflow-hidden relative">
+//       {/* 1. DYNAMIC AMBIENT LIGHT (Static on first frame for speed) */}
+//       <div className="fixed inset-0 overflow-hidden pointer-events-none">
+//         <div className="absolute -top-[10%] -left-[10%] w-full h-[60%] bg-indigo-100/40 blur-[100px] rounded-full" />
+//         <div className="absolute -bottom-[10%] -right-[10%] w-full h-[50%] bg-blue-50/30 blur-[100px] rounded-full" />
+//       </div>
+
+//       {/* 2. INSTANT VISIBILITY: Initial opacity 1 ensures no mount delay */}
+//       <motion.div
+//         initial={{ opacity: 0, scale: 0.98 }}
+//         animate={{ opacity: 1, scale: 1 }}
+//         transition={{
+//           duration: 0.2,
+//           ease: [0.22, 1, 0.26, 1], // Custom cubic-bezier for a "settling" effect
+//           delay: 0.1,
+//         }}
+//         className="w-full max-w-[400px] transform-gpu z-10"
+//       >
+//         <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.04)] border border-white p-8 sm:p-12 relative overflow-hidden">
+//           <div className="text-center mb-8 sm:mb-10 relative z-10">
+//             {/* LOGO OPTIMIZATION */}
+//             <div className="bg-gradient-to-tr from-orange-50/50 to-indigo-50/40 inline-flex items-center justify-center w-20 h-20 bg-white rounded-[2.5rem] mb-6 shadow-lg relative border border-slate-50">
+//               <img
+//                 src="/baps.png"
+//                 alt="BAPS Logo"
+//                 // FETCHPRIORITY tells browser to download this before other images
+//                 fetchpriority="high"
+//                 loading="eager"
+//                 decoding="async"
+//                 className="w-12 h-12 object-contain relative z-10"
+//               />
+//             </div>
+
+//             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">
+//               Karyakar Login
+//             </h1>
+//             <p className="text-slate-400 font-bold text-[9px] uppercase tracking-[0.3em]">
+//               Bal Mandal Access
+//             </p>
+//           </div>
+
+//           <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+//             <div className="relative group">
+//               <User
+//                 className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"
+//                 size={18}
+//               />
+//               <input
+//                 type="text"
+//                 required
+//                 className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-indigo-200 outline-none transition-all font-bold text-slate-700 placeholder:text-slate-300 text-base"
+//                 value={username}
+//                 onChange={(e) => setUsername(e.target.value)}
+//                 placeholder="Username"
+//               />
+//             </div>
+
+//             <div className="relative group">
+//               <Lock
+//                 className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"
+//                 size={18}
+//               />
+//               <input
+//                 type="password"
+//                 required
+//                 className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-indigo-200 outline-none transition-all font-bold text-slate-700 placeholder:text-slate-300 text-base"
+//                 placeholder="Password"
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//               />
+//             </div>
+
+//             <div className="flex items-center justify-between px-2 pt-1">
+//               <button
+//                 type="button"
+//                 onClick={() => setRememberMe(!rememberMe)}
+//                 className="flex items-center cursor-pointer active:opacity-70 transition-opacity"
+//               >
+//                 <div
+//                   className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+//                     rememberMe
+//                       ? "bg-slate-900 border-slate-900"
+//                       : "bg-white border-slate-200"
+//                   }`}
+//                 >
+//                   {rememberMe && (
+//                     <Check size={12} className="text-white" strokeWidth={4} />
+//                   )}
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="ml-3 text-xs font-black text-slate-500">
+//                     Remember Me
+//                   </span>
+//                   <span className="ml-3 text-xs font-black text-slate-800">
+//                     Forget Password?
+//                   </span>
+//                 </div>
+//               </button>
+//             </div>
+
+//             <button
+//               disabled={loading}
+//               className="w-full bg-slate-900 text-white font-black py-4 sm:py-5 rounded-2xl sm:rounded-3xl shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50 mt-4"
+//             >
+//               {loading ? (
+//                 <Loader2 className="animate-spin" size={20} />
+//               ) : (
+//                 <div className="flex items-center gap-2">
+//                   <span className="text-sm uppercase tracking-[0.2em] font-black">
+//                     Verify
+//                   </span>
+//                   <ChevronRight size={18} />
+//                 </div>
+//               )}
+//             </button>
+//           </form>
+
+//           <div className="mt-10 pt-6 border-t border-slate-50 flex justify-center">
+//             <p className="text-slate-300 text-[9px] font-black uppercase tracking-[0.4em] text-center px-4">
+//               BAPS SWAMINARAYAN SANSTHA
+//             </p>
+//           </div>
+//         </div>
+//       </motion.div>
+//     </div>
+//   );
+// }
+
+//ai2
 "use client";
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
-import { Lock, User, ChevronRight, Loader2, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Lock,
+  User,
+  ChevronRight,
+  Loader2,
+  Check,
+  Phone,
+  X,
+  ShieldAlert,
+} from "lucide-react";
+
+const simpleFade = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.2 },
+};
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false); // Modal State
   const router = useRouter();
 
-  // Load remembered user instantly on mount
   useEffect(() => {
     const savedUser = localStorage.getItem("remembered_karyakar");
     if (savedUser) {
@@ -509,7 +700,6 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     const result = await signIn("credentials", {
       username,
       password,
@@ -522,55 +712,89 @@ export default function LoginPage() {
     } else {
       if (rememberMe) localStorage.setItem("remembered_karyakar", username);
       else localStorage.removeItem("remembered_karyakar");
-
-      const cleanName = username.split(/[0-9]/)[0]; 
-      const displayName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
-
+      const cleanName = username.split(/[0-9]/)[0];
+      const displayName =
+        cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
       toast.success(`Identity Verified: ${displayName}`);
-      
       setTimeout(() => {
         router.push("/");
         router.refresh();
-      }, 100); // Faster redirect
+      }, 100);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#FDFDFD] p-4 sm:p-6 font-sans selection:bg-indigo-100 overflow-hidden relative">
-      
-      {/* 1. DYNAMIC AMBIENT LIGHT (Static on first frame for speed) */}
+      {/* 1. AMBIENT LIGHTING */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-full h-[60%] bg-indigo-100/40 blur-[100px] rounded-full" />
         <div className="absolute -bottom-[10%] -right-[10%] w-full h-[50%] bg-blue-50/30 blur-[100px] rounded-full" />
       </div>
 
-      {/* 2. INSTANT VISIBILITY: Initial opacity 1 ensures no mount delay */}
+      {/* 2. FORGET PASSWORD MODAL (ALERT BOX) */}
+      <AnimatePresence>
+        {showContactModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            {/* Backdrop Overlay */}
+            <motion.div
+              {...simpleFade}
+              onClick={() => setShowContactModal(false)}
+              className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-[340px] bg-white rounded-[2.5rem] shadow-[0_30px_70px_-10px_rgba(0,0,0,0.15)] p-8 text-center border border-white"
+            >
+              <button
+                onClick={() => setShowContactModal(false)}
+                className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center bg-slate-200 rounded-full text-slate-500 active:scale-90 transition-transform"
+              >
+                <X size={16} strokeWidth={3} />
+              </button>
+
+              <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <ShieldAlert className="text-indigo-600" size={32} />
+              </div>
+
+              <h2 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">
+                Security Protocol
+              </h2>
+              <p className="text-slate-500 text-sm font-medium leading-relaxed mb-8">
+                To reset the password, please contact the administrator.
+              </p>
+
+              <a
+                href="tel:9081751109"
+                className="flex items-center justify-center gap-3 w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-lg shadow-indigo-100 active:scale-95 transition-transform"
+              >
+                <Phone size={14} fill="white" />
+                Call Administrator
+              </a>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 3. MAIN LOGIN CARD */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }} 
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ 
-          duration: 0.2, 
-          ease: [0.22, 1, 0.26, 1], // Custom cubic-bezier for a "settling" effect
-          delay: 0.1 
-        }}
+        {...simpleFade}
         className="w-full max-w-[400px] transform-gpu z-10"
       >
         <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.04)] border border-white p-8 sm:p-12 relative overflow-hidden">
-          
           <div className="text-center mb-8 sm:mb-10 relative z-10">
-            {/* LOGO OPTIMIZATION */}
             <div className="bg-gradient-to-tr from-orange-50/50 to-indigo-50/40 inline-flex items-center justify-center w-20 h-20 bg-white rounded-[2.5rem] mb-6 shadow-lg relative border border-slate-50">
-              <img 
-                src="/baps.png" 
-                alt="BAPS Logo" 
-                // FETCHPRIORITY tells browser to download this before other images
-                fetchpriority="high" 
+              <img
+                src="/baps.png"
+                alt="BAPS Logo"
+                fetchpriority="high"
                 loading="eager"
-                decoding="async"
                 className="w-12 h-12 object-contain relative z-10"
               />
             </div>
-            
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">
               Karyakar Login
             </h1>
@@ -581,11 +805,14 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             <div className="relative group">
-              <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
+              <User
+                className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"
+                size={18}
+              />
               <input
                 type="text"
                 required
-                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-indigo-200 outline-none transition-all font-bold text-slate-700 placeholder:text-slate-300 text-base" 
+                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-indigo-200 outline-none transition-all font-bold text-slate-700 placeholder:text-slate-300 text-base"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
@@ -593,14 +820,17 @@ export default function LoginPage() {
             </div>
 
             <div className="relative group">
-              <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
+              <Lock
+                className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"
+                size={18}
+              />
               <input
                 type="password"
                 required
                 className="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50/50 border border-slate-100 focus:bg-white focus:border-indigo-200 outline-none transition-all font-bold text-slate-700 placeholder:text-slate-300 text-base"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
               />
             </div>
 
@@ -608,24 +838,44 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setRememberMe(!rememberMe)}
-                className="flex items-center cursor-pointer active:opacity-70 transition-opacity"
+                className="flex items-center cursor-pointer active:opacity-70"
               >
-                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${rememberMe ? 'bg-slate-900 border-slate-900' : 'bg-white border-slate-200'}`}>
-                  {rememberMe && <Check size={12} className="text-white" strokeWidth={4} />}
+                <div
+                  className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+                    rememberMe
+                      ? "bg-slate-900 border-slate-900"
+                      : "bg-white border-slate-200"
+                  }`}
+                >
+                  {rememberMe && (
+                    <Check size={12} className="text-white" strokeWidth={4} />
+                  )}
                 </div>
-                <span className="ml-3 text-xs font-black text-slate-500">Remember Me</span>
+                <span className="ml-2.5 text-[11px] font-black text-slate-500 uppercase tracking-wider">
+                  Remember Me
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowContactModal(true)}
+                className="text-[10px] font-bold text-slate-800  uppercase tracking-wider active:opacity-60 transition-opacity"
+              >
+                Forget password?
               </button>
             </div>
 
             <button
               disabled={loading}
-              className="w-full bg-slate-900 text-white font-black py-4 sm:py-5 rounded-2xl sm:rounded-3xl shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50 mt-4"
+              className="w-full bg-slate-900 text-white font-black py-4 sm:py-5 rounded-2xl sm:rounded-3xl shadow-xl flex items-center justify-center gap-3 active:scale-[0.98] transition-all mt-4"
             >
               {loading ? (
                 <Loader2 className="animate-spin" size={20} />
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm uppercase tracking-[0.2em] font-black">Verify</span>
+                  <span className="text-sm uppercase tracking-[0.2em] font-black">
+                    Verify
+                  </span>
                   <ChevronRight size={18} />
                 </div>
               )}
